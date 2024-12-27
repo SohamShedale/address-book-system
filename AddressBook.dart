@@ -47,6 +47,12 @@ class Addressbook {
     }
     print("Contact not found");
   }
+
+  void deleteContact(String firstName, String lastName) {
+    contacts.retainWhere((contact) =>
+        contact.firstName == firstName && contact.lastName == lastName);
+    print("Contact deleted successfully");
+  }
 }
 
 void main() {
@@ -57,6 +63,7 @@ void main() {
     print('1. Create Address Book');
     print('2. Add Contact');
     print('3. Edit Contact');
+    print('4. Delete Contact');
 
     stdout.write("Enter your choice: ");
     final choice = int.tryParse(stdin.readLineSync() ?? "");
@@ -160,6 +167,23 @@ void main() {
             originalFirstName, originalLastName, newContact);
         print("Existing contach of \'$addressBook\' is updated");
         break;
+
+      case 4:
+        print("Enter address book name to delete: ");
+        final addressBookName = stdin.readLineSync();
+        final addressBook = addressBooks[addressBookName];
+
+        if (addressBook == null) {
+          print("Address book not found");
+          break;
+        }
+
+        stdout.write("Enter first name of contact: ");
+        final firstName = stdin.readLineSync()!;
+        stdout.write("Enter last name of contact: ");
+        final lastName = stdin.readLineSync()!;
+
+        addressBook.deleteContact(firstName, lastName);
 
       default:
         print("Invalid choice");
