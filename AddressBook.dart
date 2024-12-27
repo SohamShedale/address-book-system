@@ -35,6 +35,18 @@ class Addressbook {
   void addContact(Contacts contact) {
     contacts.add(contact);
   }
+
+  void editContact(String firstName, String lastName, Contacts updateContact) {
+    for (int i = 0; i < contacts.length; i++) {
+      if (contacts[i].firstName == firstName &&
+          contacts[i].lastName == lastName) {
+        contacts[i] = updateContact;
+        print("Contact updated successfully");
+        return;
+      }
+    }
+    print("Contact not found");
+  }
 }
 
 void main() {
@@ -44,6 +56,7 @@ void main() {
     print('\nAddress Book Menu:');
     print('1. Create Address Book');
     print('2. Add Contact');
+    print('3. Edit Contact');
 
     stdout.write("Enter your choice: ");
     final choice = int.tryParse(stdin.readLineSync() ?? "");
@@ -98,6 +111,54 @@ void main() {
 
         addressBook.addContact(newContact);
         print("New contact added in $addressBookName");
+        break;
+
+      case 3:
+        print("Enter address book name to edit: ");
+        final addressBookName = stdin.readLineSync();
+        final addressBook = addressBooks[addressBookName];
+
+        if (addressBook == null) {
+          print("Address book not found");
+          break;
+        }
+
+        stdout.write("Enter first name of contact: ");
+        final originalFirstName = stdin.readLineSync()!;
+        stdout.write("Enter last name of contact: ");
+        final originalLastName = stdin.readLineSync()!;
+
+        stdout.write("Enter new first name: ");
+        final firstName = stdin.readLineSync();
+        stdout.write("Enter new last name: ");
+        final lastName = stdin.readLineSync();
+        stdout.write("Enter new address: ");
+        final address = stdin.readLineSync();
+        stdout.write("Enter new state: ");
+        final state = stdin.readLineSync();
+        stdout.write("Enter new city: ");
+        final city = stdin.readLineSync();
+        stdout.write("Enter new zip code: ");
+        final zip = int.tryParse(stdin.readLineSync()!);
+        stdout.write("Enter new phone number: ");
+        final phoneNumber = int.tryParse(stdin.readLineSync()!);
+        stdout.write("Enter new email address: ");
+        final email = stdin.readLineSync();
+
+        final newContact = Contacts(
+          firstName: firstName,
+          lastName: lastName,
+          address: address,
+          state: state,
+          city: city,
+          zip: zip,
+          phoneNumber: phoneNumber,
+          email: email,
+        );
+
+        addressBook.editContact(
+            originalFirstName, originalLastName, newContact);
+        print("Existing contach of \'$addressBook\' is updated");
         break;
 
       default:
