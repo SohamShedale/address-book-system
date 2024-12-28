@@ -63,6 +63,26 @@ class Addressbook {
   }
 }
 
+void searchContact(Map<String, Addressbook> addressBooks, String searchQuery) {
+  List<Contacts> result = [];
+  addressBooks.forEach((addressBookName, addressBook) {
+    for (var contact in addressBook.contacts) {
+      if ((contact.city!.toLowerCase().contains(searchQuery.toLowerCase())) ||
+          (contact.state!.toLowerCase().contains(searchQuery.toLowerCase()))) {
+        result.add(contact);
+      }
+    }
+
+    if (result.length > 0) {
+      for (var contact in result) {
+        print(contact);
+      }
+    } else {
+      print("No contact found");
+    }
+  });
+}
+
 void main() {
   Map<String, Addressbook> addressBooks = {};
 
@@ -72,6 +92,7 @@ void main() {
     print('2. Add Contact');
     print('3. Edit Contact');
     print('4. Delete Contact');
+    print('5. Search Contact');
 
     stdout.write("Enter your choice: ");
     final choice = int.tryParse(stdin.readLineSync() ?? "");
@@ -108,8 +129,7 @@ void main() {
         if (addressBook.isContactPresent(firstName, lastName)) {
           print("Contact is already present");
           break;
-        }
-        else{
+        } else {
           stdout.write("Enter address: ");
           final address = stdin.readLineSync();
           stdout.write("Enter state: ");
@@ -203,6 +223,11 @@ void main() {
         final lastName = stdin.readLineSync()!;
 
         addressBook.deleteContact(firstName, lastName);
+
+      case 5:
+        stdout.write("Enter city or state: ");
+        final search = stdin.readLineSync()!;
+        searchContact(addressBooks, search);
 
       default:
         print("Invalid choice");
