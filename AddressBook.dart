@@ -49,9 +49,17 @@ class Addressbook {
   }
 
   void deleteContact(String firstName, String lastName) {
-    contacts.retainWhere((contact) =>
+    contacts.removeWhere((contact) =>
         contact.firstName == firstName && contact.lastName == lastName);
     print("Contact deleted successfully");
+  }
+
+  bool isContactPresent(String firstName, String lastName) {
+    for (Contacts contacts in contacts) {
+      if (contacts.firstName == firstName && contacts.lastName == lastName)
+        return true;
+    }
+    return false;
   }
 }
 
@@ -93,36 +101,43 @@ void main() {
         }
 
         stdout.write("Enter first name: ");
-        final firstName = stdin.readLineSync();
+        final firstName = stdin.readLineSync()!;
         stdout.write("Enter last name: ");
-        final lastName = stdin.readLineSync();
-        stdout.write("Enter address: ");
-        final address = stdin.readLineSync();
-        stdout.write("Enter state: ");
-        final state = stdin.readLineSync();
-        stdout.write("Enter city: ");
-        final city = stdin.readLineSync();
-        stdout.write("Enter zip code: ");
-        final zip = int.tryParse(stdin.readLineSync()!);
-        stdout.write("Enter phone number: ");
-        final phoneNumber = int.tryParse(stdin.readLineSync()!);
-        stdout.write("Enter email address: ");
-        final email = stdin.readLineSync();
+        final lastName = stdin.readLineSync()!;
 
-        final newContact = Contacts(
-          firstName: firstName,
-          lastName: lastName,
-          address: address,
-          state: state,
-          city: city,
-          zip: zip,
-          phoneNumber: phoneNumber,
-          email: email,
-        );
+        if (addressBook.isContactPresent(firstName, lastName)) {
+          print("Contact is already present");
+          break;
+        }
+        else{
+          stdout.write("Enter address: ");
+          final address = stdin.readLineSync();
+          stdout.write("Enter state: ");
+          final state = stdin.readLineSync();
+          stdout.write("Enter city: ");
+          final city = stdin.readLineSync();
+          stdout.write("Enter zip code: ");
+          final zip = int.tryParse(stdin.readLineSync()!);
+          stdout.write("Enter phone number: ");
+          final phoneNumber = int.tryParse(stdin.readLineSync()!);
+          stdout.write("Enter email address: ");
+          final email = stdin.readLineSync();
 
-        addressBook.addContact(newContact);
-        print("New contact added in $addressBookName");
-        break;
+          final newContact = Contacts(
+            firstName: firstName,
+            lastName: lastName,
+            address: address,
+            state: state,
+            city: city,
+            zip: zip,
+            phoneNumber: phoneNumber,
+            email: email,
+          );
+
+          addressBook.addContact(newContact);
+          print("New contact added in $addressBookName");
+          break;
+        }
 
       case 3:
         print("Enter address book name to edit: ");
