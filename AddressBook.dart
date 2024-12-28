@@ -73,6 +73,10 @@ void main() {
         stdout.write("Enter Address Book name: ");
         final addressBookName = stdin.readLineSync();
         if (addressBookName != null) {
+          if (addressBooks.containsKey(addressBookName)) {
+            print("Address book with name \'$addressBookName\' already exist");
+            break;
+          }
           addressBooks[addressBookName] = Addressbook(addressBookName);
           print("Address Book \'$addressBookName\' created successfully");
         }
