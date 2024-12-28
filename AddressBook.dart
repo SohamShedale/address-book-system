@@ -83,6 +83,45 @@ void searchContact(Map<String, Addressbook> addressBooks, String searchQuery) {
   });
 }
 
+void showCount(
+    Map<String, Addressbook> addressBooks, String searchBy, String search) {
+  Map<String, int> mp = {};
+  addressBooks.forEach((addressBookName, addressBook) {
+    for (var contact in addressBook.contacts) {
+      if (searchBy == "city") {
+        if (contact.city == search) {
+          if (mp.containsKey(addressBookName)) {
+            mp[addressBookName] = mp[addressBookName]! + 1;
+          } else {
+            mp[addressBookName] = 1;
+          }
+        }
+      } else if (searchBy == "state") {
+        if (contact.state == search) {
+          if (mp.containsKey(addressBookName)) {
+            mp[addressBookName] = mp[addressBookName]! + 1;
+          } else {
+            mp[addressBookName] = 1;
+          }
+        }
+      }
+    }
+
+    for (var pair in mp.entries) {
+      print("${pair.key} - ${pair.value}");
+    }
+  });
+}
+
+void display(Map<String, Addressbook> addressBooks) {
+  addressBooks.forEach((addressBookName, addressBook) {
+    print("$addressBookName :");
+    for (var contact in addressBook.contacts) {
+      stdout.write("\t $contact \n");
+    }
+  });
+}
+
 void main() {
   Map<String, Addressbook> addressBooks = {};
 
@@ -93,6 +132,9 @@ void main() {
     print('3. Edit Contact');
     print('4. Delete Contact');
     print('5. Search Contact');
+    print('6. Show count by city or state');
+    print('7. Display address books');
+    print('8. Exit');
 
     stdout.write("Enter your choice: ");
     final choice = int.tryParse(stdin.readLineSync() ?? "");
@@ -228,6 +270,33 @@ void main() {
         stdout.write("Enter city or state: ");
         final search = stdin.readLineSync()!;
         searchContact(addressBooks, search);
+
+      case 6:
+        print("Choose any one: ");
+        print("1. City");
+        print("2. State");
+        final countChoice = int.tryParse(stdin.readLineSync()!);
+
+        switch (countChoice) {
+          case 1:
+            stdout.write("Enter city name: ");
+            final search = stdin.readLineSync()!;
+            showCount(addressBooks, "city", search);
+            break;
+          case 2:
+            stdout.write("Enter state name: ");
+            final search = stdin.readLineSync()!;
+            showCount(addressBooks, "state", search);
+            break;
+          default:
+            print("Invalid choice");
+        }
+
+      case 7:
+        display(addressBooks);
+
+      case 8:
+        return;
 
       default:
         print("Invalid choice");
